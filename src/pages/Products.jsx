@@ -1,4 +1,5 @@
 import { Box, SimpleGrid, Image, Text, VStack } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
 
 const sampleProducts = [
   {
@@ -21,11 +22,21 @@ const sampleProducts = [
   },
 ];
 
-const Products = () => {
+const Products = ({ searchTerm }) => {
+  const [filteredProducts, setFilteredProducts] = useState(sampleProducts);
+
+  useEffect(() => {
+    setFilteredProducts(
+      sampleProducts.filter((product) =>
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+      )
+    );
+  }, [searchTerm]);
+
   return (
     <Box p={4}>
       <SimpleGrid columns={[1, 2, 3]} spacing={10}>
-        {sampleProducts.map((product) => (
+        {filteredProducts.map((product) => (
           <Box key={product.id} borderWidth="1px" borderRadius="lg" overflow="hidden">
             <Image src={product.image} alt={product.name} />
             <VStack p={4}>
